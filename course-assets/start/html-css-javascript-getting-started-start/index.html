@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <style>
-        h1 {
-            background-color: #39f;
-            color: #fff;
-        }
-    </style>
-</head>
-<body>
-    <h1>Titulo</h1>
-</body>
+    <head>
+        <meta name="viewport" content="width=device-width initial-scale=1">
+        <link rel="stylesheet" href="site.css">
+        <style>
+            .desktop,
+            .print {
+                display:none;
+            }
+            @media print {
+                .mobile,
+                .desktop {
+                    display:none;
+                }
+                .print {
+                    display: block;
+                }
+            }
+
+            @media screen and (min-width: 768px) {
+                .mobile {
+                    display: none;
+                }
+                .desktop {
+                    display: block;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Titulo</h1>
+        <div class="columns">
+            prueba
+        </div>
+    </body>
 </html>
