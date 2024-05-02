@@ -77,3 +77,13 @@ aside {
 article {
     width: 75%;
 }
+
+/* Se aplica a aquellos elementos con al menos 768px de ancho */
+@media only screen and (min-width: 768px) {
+    main {
+        display:flex;
+    } 
+    aside {
+        margin-left: 2%;
+    }
+}
