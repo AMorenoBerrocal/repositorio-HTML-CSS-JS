@@ -4,51 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Order | Bethany's Pie Shop</title>
+    <title>Bethany's Pie Shop</title>
     <link rel="stylesheet" href="site.css" type="text/css" />
     <style>
-      @media only screen and (min-width: 768px) {
-        article {
-          width: 350px;
+
+        @media only screen and (min-width: 768px) {
+            article {
+                width: 350px;
+            }
         }
-      }
 
-      .pie {
-        margin-bottom: 20px;
-      }
+        .input-group{
+            margin-bottom: 20px;
+        }
 
-      .input-group {
-        margin-bottom: 20px;
-      }
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            padding: 10px;
+            border: solid 1px #999;
+            border-radius: 2px;
+            width: 100%; 
+        }
+        label {
+            font-weight: 600;
+        }
 
-      .input-group input,
-      .input-group textarea,
-      .input-group select {
-        padding: 10px;
-        border: solid 1px #999;
-        border-radius: 2px;
-        width: 100%;
-      }
+        input[type="reset"] {
+            background: transparent;
+            border: 0;
+            text-decoration: underline;
+            cursor: pointer;   
+        }
 
-      label {
-        font-weight: 600;
-      }
-
-      input[type="reset"] {
-        background: transparent;
-        border: 0;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-
-      input[type="submit"] {
-        border: solid 1px #999;
-        border-radius: 3px;
-        padding: 10px;
-      }
+        input[type="submit"] {
+            border: solid 1px #999;
+            border-radius: 3px;
+            padding: 10px;
+        }
     </style>
   </head>
-
   <body>
     <header>
       <nav>
@@ -59,24 +54,76 @@
         </ul>
       </nav>
     </header>
-
     <main>
       <aside><img src="images/logo.png" alt="Bethany's Pie Shop" /></aside>
-
       <article>
-        <!-- ADD CONTENT HERE -->
         <h1>Order</h1>
+        <form action="http://127.0.0.1:5500/api/post" method="POST">
+            <input type="hidden" id="pie-order" name="pie-order">
+            <input type="hidden" id="location" name="location">
 
-        <div class="pie">
-          <img src="" />
-          <div class="columns">
-            <div class="title"></div>
-            <div class="price"></div>
-          </div>
-          <p class="desc"></p>
-        </div>
+            <div class="input-group">
+                <div><label for="first-name">Nombre</label></div>
+                <div><input type="text" name="first-name" id="first-name"/></div>
+            </div>
 
-        
+            <div class="input-group">
+                <div><label for="last-name">Apellido</label></div>
+                <div><input type="text" name="last-name" id="last-name"/></div>
+            </div> 
+
+            <div class="input-group">
+                <div><label for="address">Direccion</label></div>
+                <div><input type="text" name="address" id="address"/></div>
+            </div> 
+
+            <div class="input-group">
+                <div><label for="state">Estado</div>
+                <div>
+                    <select name="state" id="state">
+                        <option value="" selected>[Selecciona uno]</option>
+                        <option value="Madrid">Madrid</option>
+                        <option value="Barcelona">Barcelona</option>
+                        <option value="Valencia">Valencia</option>
+                        <option value="Sevilla">Sevilla</option>
+                        <option value="Zaragoza">Zaragoza</option>
+                        <option value="Málaga">Málaga</option>
+                        <option value="Murcia">Murcia</option>
+                        <option value="Palma de Mallorca">Palma de Mallorca</option>
+                        <option value="Las Palmas de Gran Canaria">Las Palmas de Gran Canaria</option>
+                        <option value="Bilbao">Bilbao</option>
+                        <option value="Alicante">Alicante</option>
+                        <option value="Córdoba">Córdoba</option>
+                        <option value="Valladolid">Valladolid</option>
+                        <option value="Vigo">Vigo</option>
+                        <option value="Gijón">Gijón</option>
+                        <option value="L'Hospitalet de Llobregat">L'Hospitalet de Llobregat</option>
+                        <option value="La Coruña">La Coruña</option>
+                        <option value="Granada">Granada</option>
+                        <option value="Vitoria-Gasteiz">Vitoria-Gasteiz</option>
+                        <option value="Santa Cruz de Tenerife">Santa Cruz de Tenerife</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <div><label for="postal-code">Código postal</label></label></div>
+                <div><input type="text" name="postal-code" id="postal-code"/></div>
+            </div>
+
+            <div class="input-group">
+                <div><label for="comments">Comentarios</label></div>
+                <div>
+                    <textarea
+                        name="comments"
+                        id="comments"
+                        cols="30"
+                        rows="10"
+                        ></textarea>
+                </div>
+            </div>
+            <input type="reset" value="Reset"/>
+            <input type="submit" value="Order"/>
+        </form>
       </article>
     </main>
     <footer>
@@ -88,6 +135,48 @@
         </ul>
       </nav>
     </footer>
-
   </body>
+  <script>
+    window.addEventListener("DOMContentLoaded", function(e) {
+        let locationBox = document.querySelector("#location");
+
+        let location = {
+            latitude: "unknown",
+            longitude: "unknown"
+        }
+
+        window.navigator.geolocation.getCurrentPosition(
+            function(position) {
+                location = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+                locationBox.value = JSON.stringify(location);
+            }, function(error) {
+                locationBox.value = JSON.stringify(location);
+            }
+        );
+
+        const order = localStorage.getItem("order");
+        if(order) {
+            const pieOrder = JSON.parse(order);
+
+            const orderInput = document.querySelector("#pie-order");
+            orderInput.value = order;
+
+            const pie = document.querySelector(".pie");
+            const title = document.querySelector(".title");
+            const price = document.querySelector(".price");
+            const desc = document.querySelector(".desc");
+
+            title.innerText = pieOrder.title;
+            price.innerText = pieOrder.price;
+            desc.innerText = pieOrder.desc;
+
+            const img = pie.querySelector("img");
+            img.setAttribute("src", `images/${pieOrder.id}.png`);
+            img.setAttribute("alt", pieOrder.title);
+        }
+    });
+  </script>
 </html>
